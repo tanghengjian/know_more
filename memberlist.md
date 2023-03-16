@@ -1,6 +1,7 @@
 # cortex ingester 基于 hash ring 进行 token 管理
 # 整体流程
-image.png
+![p1](https://user-images.githubusercontent.com/123643548/225557238-14745767-a0ff-4e45-8742-98f09cd9c536.png)
+
 比如有3个ingester（下文简称in)，每个 ingester 产生如下512 个不同的 tokens
 ```
 4222218899 4244974091 4247636007 4260587700 4270043296 4278792571
@@ -15,9 +16,12 @@ distributor 对ingester 产生的所有 token 进行排序
 0(in1),5(in2),7(in4),9(in3),14(in4),20(in2),30(in3),50(in4),100(in1)
 ```
 上述的series发现落在9-14区间，所以后续的series数据，都被写到in4。
+![image](https://user-images.githubusercontent.com/123643548/225601331-d682948f-f22d-473c-9eb1-b505ffdd34f3.png)
 
 # ring 工作流程
 Ingester 加入 Memberlist 的流程
+![image](https://user-images.githubusercontent.com/123643548/225558163-02139983-ef6c-4121-9ea0-22eaa84a55df.png)
+
 ## 初始化 KV store
 ```
 type KV struct {
